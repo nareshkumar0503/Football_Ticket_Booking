@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - LALIGA Tickets</title>
+    <link rel="stylesheet" href="{% static 'myapp/land.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .success-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+        }
+        .icon { font-size: 5rem; color: #22c55e; margin-bottom: 20px; }
+        h1 { color: #1e40af; margin-bottom: 10px; }
+        .details {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .btn {
+            background: #1e40af;
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn:hover { background: #1e3a8a; }
+        .redirect-msg { margin-top: 30px; color: #64748b; font-size: 1rem; }
+        #download-frame { display: none; } /* Hidden iframe for download */
+    </style>
+</head>
+<body>
+
+<div class="success-card">
+    <div class="icon">✅</div>
+    <h1>Booking Confirmed!</h1>
+    <p>Thank you for booking with LALIGA.</p>
+    <p>Your e-ticket is being downloaded automatically...</p>
+
+    <div class="details">
+        <p><strong>Booking ID:</strong> #{{ booking.id }}</p>
+        <p><strong>Match:</strong> {{ booking.match.home_team }} vs {{ booking.match.away_team }}</p>
+        <p><strong>Date:</strong> {{ booking.match.match_date|date:"F d, Y - H:i" }}</p>
+        <p><strong>Category:</strong> {{ booking.category }}</p>
+        <p><strong>Seats:</strong> {{ booking.seats_booked }}</p>
+        <p><strong>Total Paid:</strong> ₹{{ booking.total_price|floatformat:2 }}</p>
+    </div>
+
+    <p>If the download doesn't start, <a href="#" onclick="triggerDownload()">click here</a>.</p>
+
+    <a href="{% url 'landingpage' %}" class="btn">Back to Matches</a>
+
+    <div class="redirect-msg">
+        Redirecting to home page in <span id="countdown">8</span> seconds...
+    </div>
+</div>
+
+<!-- Hidden iframe to trigger PDF download without leaving the page -->
+<iframe id="download-frame" src=""></iframe>
+
+<script>
+    // Auto-trigger PDF download on page load
+    window.onload = function() {
+        triggerDownload();
+    };
+
+    function triggerDownload() {
+        const downloadUrl = "{% url 'payment_success' booking_id=booking.id %}?force_download=1";
+        document.getElementById('download-frame').src = downloadUrl;
+        console.log("Triggering PDF download:", downloadUrl);
+    }
+
+    // Countdown + auto-redirect
+    let seconds = 8;
+    const countdownEl = document.getElementById('countdown');
+    const timer = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+        if (seconds <= 0) {
+            clearInterval(timer);
+            window.location.href = "{% url 'landingpage' %}";
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>

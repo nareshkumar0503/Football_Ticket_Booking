@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - Booking #{{ booking.id }}</title>
+    <link rel="stylesheet" href="{% static 'myapp/land.css' %}">
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>   
+    <style>
+        .container { max-width: 600px; margin: 60px auto; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #1e3a8a; color: white; padding: 30px; text-align: center; }
+        .content { padding: 40px; text-align: center; }
+        .amount { font-size: 2.8rem; font-weight: bold; color: #1e40af; margin: 20px 0; }
+        .details { background: #f8fafc; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: left; }
+        .btn-pay { background: #22c55e; color: white; border: none; padding: 16px 40px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; margin-top: 30px; }
+        .btn-pay:hover { background: #16a34a; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Complete Your Booking</h1>
+        <p>Booking #{{ booking.id }} • {{ booking.match }}</p>
+    </div>
+
+    <div class="content">
+        <div class="amount">₹ {{ booking.total_price|floatformat:2 }}</div>
+        
+        <div class="details">
+            <p><strong>Match:</strong> {{ booking.match.home_team }} vs {{ booking.match.away_team }}</p>
+            <p><strong>Date:</strong> {{ booking.match.match_date|date:"F d, Y - H:i" }}</p>
+            <p><strong>Category:</strong> {{ booking.category }}</p>
+            <p><strong>Seats:</strong> {{ booking.seats_booked }}</p>
+            <p><strong>Booked by:</strong> {{ booking.user.username }}</p>
+        </div>
+
+        <button class="btn-pay" onclick="initiatePayment()">Pay Now →</button>
+
+        <div style="margin-top:30px; color:#64748b;">
+            <p>🔒 Secure payment powered by Cashfree</p>
+            <p>All major cards, UPI, Netbanking accepted</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const cf = Cashfree({
+        mode: "sandbox"           
+    });
+
+    function initiatePayment() {
+        console.log("[DEBUG] Pay Now clicked");
+
+        const sessionId = "{{ payment_session_id|default:'' }}";
+        console.log("[DEBUG] paymentSessionId:", sessionId);
+
+        if (!sessionId) {
+            alert("Error: No payment session ID received from server. Please try again or contact support.");
+            return;
+        }
+
+        cf.checkout({
+            paymentSessionId: sessionId,
+            redirectTarget: "_self"     
+        })
+        .then((result) => {
+            console.log("[DEBUG] Checkout response:", result);
+            if (result && result.error) {
+                alert("Payment error: " + (result.error.message || "Unknown error"));
+            }
+        })
+        .catch((err) => {
+            console.error("[ERROR] Cashfree checkout failed:", err);
+            alert("Failed to open payment window.\nCheck browser console (F12) for details.");
+        });
+    }
+
+    console.log("[DEBUG] Payment page loaded - SDK version:", Cashfree.version || "unknown");
+</script>
+
+</body>
+</html>

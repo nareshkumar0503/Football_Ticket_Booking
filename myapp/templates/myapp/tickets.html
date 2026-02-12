@@ -1,0 +1,305 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Liga | Your Tickets</title>
+    <link rel="stylesheet" href="{% static 'myapp/land.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'myapp/liga.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .section {
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1a3c5e;
+            font-size: 2.2rem;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+        }
+
+        th {
+            background: #1a3c5e;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+            transition: background-color 0.2s;
+        }
+
+        .status {
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .status-Completed { background: #d4edda; color: #155724; }
+        .status-Pending   { background: #fff3cd; color: #856404; }
+        .status-Failed    { background: #f8d7da; color: #721c24; }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1a3c5e;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .download-btn:hover {
+            background: #2c5282;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 60, 94, 0.25);
+        }
+
+        .download-btn i {
+            font-size: 1.1rem;
+        }
+
+        .no-tickets {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+            font-size: 1.2rem;
+        }
+
+        /* Mobile responsive (stacked card style) */
+        @media screen and (max-width: 768px) {
+            .table-container {
+                overflow-x: hidden;
+                box-shadow: none;
+                background: transparent;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                margin: 0 0 25px 0;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                background: white;
+                box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            }
+
+            td {
+                border: none;
+                border-bottom: 1px solid #f0f0f0;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+                min-height: 50px;
+            }
+
+            td:last-child {
+                border-bottom: 0;
+                text-align: center;
+                padding: 16px;
+            }
+
+            td:before {
+                position: absolute;
+                top: 14px;
+                left: 16px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                text-align: left;
+                font-weight: 600;
+                color: #1a3c5e;
+            }
+
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            h2 { font-size: 1.8rem; }
+            td, td:before { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+
+{% if messages %}
+<section class="py-4 bg-success text-white text-center" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+    <div class="container">
+    {% for message in messages %}
+        <h4 class="mb-0"><i class="fas fa-check-circle me-2"></i> {{ message }}</h4>
+    {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<nav class="navbar">
+    <div class="logo">
+        <a href="{% url 'landingpage' %}">
+        <img src="{% static 'myapp/lala.png' %}" alt="Football Logo" class="logo-img">
+        </a>
+    </div>
+    <ul class="nav-links">
+        <li><a href="{% url 'landingpage' %}"><b>Home</b></a></li>
+        <li><a href="{% url 'matches' %}"><b>Matches</b></a></li>
+        <li><a href="{% url 'tickets' %}"><b>Tickets</b></a></li>
+        <li><a href="#contact"><b>Contact</b></a></li>
+        <li>
+            <a href="{% url 'logout' %}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<section class="section">
+    <h2>Your Booked Tickets & History</h2>
+
+    {% if bookings %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Seats</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Booked On</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td data-label="Match">
+                            {{ booking.match.home_team }} vs {{ booking.match.away_team }}
+                        </td>
+                        <td data-label="Date">
+                            {{ booking.match.match_date|date:"d M Y - H:i" }}
+                        </td>
+                        <td data-label="Category">
+                            {{ booking.category }}
+                        </td>
+                        <td data-label="Seats">
+                            {{ booking.seats_booked }}
+                        </td>
+                        <td data-label="Price">
+                            ₹{{ booking.total_price|floatformat:2 }}
+                        </td>
+                        <td data-label="Status">
+                            <span class="status status-{{ booking.payment_status }}">
+                                {{ booking.payment_status }}
+                            </span>
+                        </td>
+                        <td data-label="Booked On">
+                            {{ booking.booked_on|date:"d M Y - H:i" }}
+                        </td>
+                        <td data-label="Action">
+                            {% if booking.payment_status == 'Completed' %}
+                                <a href="{% url 'payment_success' booking.id %}?force_download=1"
+                                   class="download-btn"
+                                   title="Download your e-Ticket as PDF">
+                                    <i class="fas fa-download"></i> Download Ticket
+                                </a>
+                            {% else %}
+                                <span style="color: #6c757d; font-style: italic;">
+                                    Not available
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="no-tickets">
+            <i class="fas fa-ticket-alt fa-3x" style="color:#ccc; margin-bottom:15px;"></i><br>
+            No tickets booked yet.<br>
+            <a href="{% url 'matches' %}" style="color:#1a3c5e; text-decoration:underline;">Browse upcoming matches →</a>
+        </div>
+    {% endif %}
+</section>
+
+<footer id="contact">
+    <div class="logo">
+        <img src="{% static 'myapp/lala.png' %}" alt="Football Logo" class="logo-img">
+        <p>The best football ecosystem in the world.</p>
+    </div>
+    <p>© 2026 - LALIGA | All Rights Reserved</p>
+    <p>Contact: info@laliga.com</p>
+    <div class="social-icons">
+        <a href="https://www.facebook.com/la.liga/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/laliga/" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/laligaEN" aria-label="Twitter" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://www.youtube.com/user/laliga" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+</footer>
+
+<script src="{% static 'myapp/land.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Liga | Welcome</title>
+    <link rel="icon" type="image/png" href="{% static 'myapp/liga.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "myapp/campnou.jpg" %}');
+    background-size: cover;
+    color: white;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    background: black;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #ff4b43;
+    color: black;
+}
+
+footer {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    font-size: 20px;
+}
+
+.social-icons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 24px;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #ff4b43;
+    transform: scale(1.2);
+}
+</style>
+<body>
+    {% if messages %}
+  <section class="py-4 bg-success text-white text-center" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+    <div class="container">
+      {% for message in messages %}
+        <h4 class="mb-0"><i class="fas fa-check-circle me-2"></i> {{ message }}</h4>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+    <section class="hero">
+        <h1>Welcome to La Liga Ticket Booking</h1>
+        <p>Sign up or log in to book tickets for exciting football matches!</p>
+        <div class="auth-buttons">
+            <a href="{% url 'signup' %}" class="btn">Signup</a>
+            <a href="{% url 'login' %}" class="btn">Login</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 - LALIGA | All Rights Reserved</p>
+        <p>Contact: info@laliga.com</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/la.liga/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/laliga/" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/laligaEN" aria-label="Twitter" target="_blank"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.youtube.com/user/laliga" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+</body>
+</html>

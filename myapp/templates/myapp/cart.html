@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>La Liga | Ticket Invoice</title>
+    <link rel="icon" type="image/png" href="{% static 'myapp/liga.png' %}">
+    <link rel="stylesheet" href="{% static 'myapp/cart.css' %}">
+</head>
+
+<body>
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'landingpage' %}">
+            <img src="{% static 'myapp/lala.png' %}" alt="Football Logo" class="logo-img">
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'landingpage' %}"><b>Home</b></a></li>
+            <li><a href="https://www.laliga.com/en-GB/laliga-easports/clubs" target="_blank"><b>Clubs</b></a></li>
+            <li><a href="https://www.laliga.com/en-GB/laliga-easports/calendar" target="_blank"><b>Calendar</b></a></li>
+            <li><a href="#contact"><b>Contact</b></a></li>
+        </ul>
+    </nav>
+
+<div class="invoice">
+    <h2>Ticket Invoice</h2>
+
+    <div class="row">
+        <span>Match</span>
+        <span id="match"></span>
+    </div>
+
+    <div class="row">
+        <span>Ticket Price</span>
+        <span>$<span id="price"></span></span>
+    </div>
+
+    <div class="row">
+        <span>GST (18%)</span>
+        <span>$<span id="gst"></span></span>
+    </div>
+
+    <div class="row total">
+        <span>Total Amount</span>
+        <span>$<span id="total"></span></span>
+    </div>
+
+    <div id="notify" class="notify">Ticket Booked Successfully!</div>
+    <button onclick="confirmBooking()">Confirm Booking</button>
+
+</div>
+<footer id="contact">
+    <div class="logo">
+            <img src="{% static 'myapp/lala.png' %}" alt="Football Logo" class="logo-img">
+            <p>The best football ecosystem in the world.</p>
+        </div>
+    <p>© 2026 - LALIGA | All Rights Reserved</p>
+    <p>Contact: info@laliga.com</p>
+
+    <div class="social-icons">
+        <a href="https://www.facebook.com/la.liga/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/laliga/" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/laligaEN" aria-label="Twitter" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://www.youtube.com/user/laliga" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+</footer>
+<script>
+    let match = localStorage.getItem("matchName");
+    let price = Number(localStorage.getItem("ticketPrice"));
+
+    let gst = price * 0.18;
+    let total = price + gst;
+
+    document.getElementById("match").innerText = match;
+    document.getElementById("price").innerText = price;
+    document.getElementById("gst").innerText = gst;
+    document.getElementById("total").innerText = total;
+
+    function confirmBooking() {
+        alert("Ticket Booked Successfully!");
+    }
+</script>
+
+</body>
+</html>

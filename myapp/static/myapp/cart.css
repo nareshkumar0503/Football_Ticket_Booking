@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url('clubs.png');
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: black;
+    padding: 15px 40px;
+    font-size: larger;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;   
+    align-items: center;
+    color: white;
+    font-size: 22px;
+    text-align: center;
+}
+
+.logo-img {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 8px;      
+}
+
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+    padding: 8px 12px;
+    transition: background 0.3s;
+}
+
+.nav-links a:hover {
+    background-color:#ff4b43;
+    border-radius: 5px;
+}
+
+.invoice {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .invoice h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color:black;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight:bold;   
+        }
+
+        button:hover {
+            background-color: #e64a19;
+        }
+
+footer {
+    background:black;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    font-size: 20px;
+    margin-top: auto;
+}
+
+.social-icons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 24px;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #ff4b43;
+    transform: scale(1.2);
+}
+
+.notify {
+    display: none;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+}

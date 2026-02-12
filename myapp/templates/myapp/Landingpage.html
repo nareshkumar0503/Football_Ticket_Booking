@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Liga | Home</title>
+    <link rel="stylesheet" href="{% static 'myapp/land.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'myapp/liga.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Added CSS for better match cards layout */
+        #matches .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive: 1-4 cards per row based on screen size */
+            gap: 20px; /* Space between cards */
+            justify-items: center; /* Center cards in their columns */
+            max-width: 1200px; /* Limit container width for larger screens */
+            margin: 0 auto; /* Center the container */
+        }
+        .match-card {
+            width: 100%; /* Full width of grid cell */
+            max-width: 300px; /* Optional: cap card width */
+            box-sizing: border-box; /* Include padding/border in width */
+        }
+        @media (max-width: 768px) {
+            #matches .cards-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller cards on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+{% if messages %}
+<section class="py-4 bg-success text-white text-center" style="background: linear-gradient(135deg, #28a745, #1e7e34);">
+    <div class="container">
+    {% for message in messages %}
+        <h4 class="mb-0"><i class="fas fa-check-circle me-2"></i> {{ message }}</h4>
+    {% endfor %}
+    </div>
+</section>
+{% endif %}
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'landingpage' %}">
+            <img src="{% static 'myapp/lala.png' %}" alt="Football Logo" class="logo-img">
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home"><b>Home</b></a></li>
+            <li><a href="{% url 'matches' %}"><b>Matches</b></a></li>
+            <li><a href="{% url 'tickets' %}"><b>Tickets</b></a></li>
+            <li><a href="#contact"><b>Contact</b></a></li>
+            <li>
+    <a href="{% url 'logout' %}" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+</li>
+        </ul>
+    </nav>
+    <section id="home" class="hero">
+        <h1>Welcome to the Spanish League, {{ user.username }}!</h1>
+        <p>Experience the thrill of the world's best football action!</p>
+    
+        <div class="carousel">
+            <div class="carousel-slides">
+                <img src="{% static 'myapp/fancode.jpg' %}">
+                <img src="{% static 'myapp/fcb25.jpg' %}">
+                <img src="{% static 'myapp/rm.jpg' %}">
+                <img src="{% static 'myapp/supercup.avif' %}">
+            </div>
+            <button class="prev">&lt;</button>
+            <button class="next">&gt;</button>
+        </div>
+    </section>
+    <section id="teams" class="section">
+        <h2>Featured Teams</h2>
+        <div class="cards-container">
+            <div class="card">
+                <img src="{% static 'myapp/clubs.png' %}" alt="Top Teams Logos">
+                <h3>Top Clubs</h3>
+                <p>Barcelona, Real Madrid, Atletico Madrid and more dominate the league.</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'myapp/tos.jpg' %}" alt="Club Logos">
+                <h3>Elite Squads</h3>
+                <p>World-class players competing for glory every season.</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'myapp/pedri.jpeg' %}" alt="Action Shot">
+                <h3>Rising Stars</h3>
+                <p>New talents emerging from academies worldwide.</p>
+            </div>
+        </div>
+    </section>
+    <section id="matches" class="section">
+        <h2>Upcoming Matches</h2>
+        <div class="cards-container">
+            {% for match in matches %}
+                <div class="card match-card">
+                    {% if match.image_url %}
+                        <img src="{{ match.image_url }}" alt="{{ match.home_team }} vs {{ match.away_team }}">
+                    {% endif %}
+                    <h3>{{ match.home_team }} vs {{ match.away_team }}</h3>
+                    <p>Date: {{ match.match_date|date:"F d, Y - H:i" }}</p>
+                    <p>Venue: {{ match.stadium }}</p>
+                    <p>From ₹{{ match.price_general }} (General)</p>
+                    <br>
+                    <a href="{% url 'book_ticket' match.id %}" class="book-btn">Book Ticket</a>
+                </div>
+            {% empty %}
+                <p>No upcoming matches yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+    <section id="contact" class="section">
+        <h2>Contact Us</h2>
+        <form id="contact-form" class="contact-form">
+            <input type="text" id="name" name="name" placeholder="Enter your Name" value="{{ user.username|default:'' }}">
+            <span class="error" id="nameError"></span>
+            <input type="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Enter your Email" value="{{ user.email|default:'' }}">
+            <span class="error" id="emailError"></span>
+            <textarea id="message" placeholder="Enter your Message"></textarea>
+            <span class="error" id="msgError"></span>
+            <button type="submit">Submit</button>
+            <p id="successmsg"></p>
+        </form>
+    </section>
+<footer id="contact">
+    <div class="logo">
+            <img src="{% static 'myapp/lala.png' %}" alt="Football Logo" class="logo-img">
+            <p>The best football ecosystem in the world.</p>
+        </div>
+    <p>© 2026 - LALIGA | All Rights Reserved</p>
+    <p>Contact: info@laliga.com</p>
+    <div class="social-icons">
+        <a href="https://www.facebook.com/la.liga/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/laliga/" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/laligaEN" aria-label="Twitter" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://www.youtube.com/user/laliga" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+</footer>
+    <script src="{% static 'myapp/land.js' %}"></script>
+</body>
+</html>
