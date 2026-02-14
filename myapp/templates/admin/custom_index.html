@@ -1,0 +1,108 @@
+{% extends "admin/base_site.html" %}
+{% load static i18n admin_urls %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'myapp/land.css' %}">
+  <style>
+    body { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "myapp/campnou.jpg" %}'); background-size: cover; color: white; }
+    #header { background: black; border-bottom: 3px solid #ff4b43; }
+    #content { background: rgba(0,0,0,0.6); border-radius: 10px; padding: 20px; backdrop-filter: blur(5px); }
+    .card { background: #ffb766; color: black; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s; }
+    .card:hover { transform: translateY(-5px); }
+    .card h3 { margin: 0 0 10px; font-size: 1.8rem; }
+    .card p { margin: 0; font-size: 1.2rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .sidebar { background: rgba(0,0,0,0.8); padding: 20px; border-radius: 10px; }
+    .sidebar a { color: white; display: block; padding: 10px; margin: 5px 0; border-radius: 5px; text-decoration: none; }
+    .sidebar a:hover { background: #ff4b43; }
+  </style>
+{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">La Liga Admin Panel ⚽</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar Navigation -->
+      <div class="col-md-3 sidebar">
+        <h3>Navigation</h3>
+        <a href="{% url 'admin:myapp_team_changelist' %}">Teams</a>
+        <a href="{% url 'admin:myapp_stadium_changelist' %}">Stadiums</a>
+        <a href="{% url 'admin:myapp_match_changelist' %}">Matches</a>
+        <a href="{% url 'admin:myapp_booking_changelist' %}">Bookings</a>
+        <a href="{% url 'admin:myapp_seat_changelist' %}">Seats</a>
+        <a href="{% url 'admin:logout' %}">Logout</a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9" id="content-main">
+        <h2>Welcome to La Liga Admin Dashboard</h2>
+
+        <div class="stats-grid">
+          <div class="card">
+            <h3>Total Matches</h3>
+            <p>{{ total_matches }}</p>
+          </div>
+          <div class="card">
+            <h3>Upcoming Matches</h3>
+            <p>{{ upcoming_matches }}</p>
+          </div>
+          <div class="card">
+            <h3>Total Bookings</h3>
+            <p>{{ total_bookings }}</p>
+          </div>
+          <div class="card">
+            <h3>Total Revenue</h3>
+            <p>₹{{ total_revenue|floatformat:2 }}</p>
+          </div>
+          <div class="card">
+            <h3>Seat Occupancy</h3>
+            <p>{{ seat_occupancy }}%</p>
+          </div>
+        </div>
+
+        <!-- Recent Bookings Table -->
+        <h3>Recent Bookings</h3>
+        <table class="table table-striped" style="background: rgba(255,255,255,0.1); color: white;">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Match</th>
+              <th>Category</th>
+              <th>Seats</th>
+              <th>Total</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for booking in recent_bookings %}
+              <tr>
+                <td>{{ booking.user.username }}</td>
+                <td>{{ booking.match }}</td>
+                <td>{{ booking.category }}</td>
+                <td>{{ booking.seats_booked }}</td>
+                <td>₹{{ booking.total_price|floatformat:2 }}</td>
+                <td>{{ booking.booked_on|date:"d M Y H:i" }}</td>
+                <td><span class="badge bg-{% if booking.payment_status == 'Completed' %}success{% elif booking.payment_status == 'Pending' %}warning{% else %}danger{% endif %}">{{ booking.payment_status }}</span></td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7">No recent bookings.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <footer style="background: black; color: white; text-align: center; padding: 15px; margin-top: 30px;">
+    © 2026 La Liga Ticket Booking | Admin Panel
+  </footer>
+{% endblock %}
