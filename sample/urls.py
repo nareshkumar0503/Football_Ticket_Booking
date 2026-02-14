@@ -31,9 +31,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from myapp.admin import admin_site  # ← import this
+from myapp.admin import admin_site  # ← Import custom site
 
 urlpatterns = [
-    path('admin/', admin_site.urls),  # ← use custom admin here
+    path('admin/', admin_site.urls),  # ← Use custom admin
     path('', include('myapp.urls')),
 ]
