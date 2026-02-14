@@ -7,7 +7,7 @@ from .models import Team, Stadium, Match, Booking, Seat
 class CustomAdminSite(AdminSite):
     site_header = "La Liga Admin Panel ⚽"
     site_title = "La Liga Admin"
-    index_template = 'admin/custom_index.html'
+    index_template = 'admin/custom_index.html'  # our new modern dashboard
 
     def index(self, request, extra_context=None):
         total_matches = Match.objects.count()
