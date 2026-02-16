@@ -2,7 +2,7 @@
 
 {% block user_links %}
     {% if user.is_authenticated %}
-        <!-- User dropdown -->
+        <!-- User dropdown (keep this for future fix) -->
         <li class="nav-item dropdown me-2">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fas fa-user-circle fa-lg"></i>
@@ -18,18 +18,24 @@
                     <li><hr class="dropdown-divider"></li>
                 {% endif %}
                 <li>
-                    <a class="dropdown-item text-muted small" href="{% url 'admin:logout' %}">
-                        <i class="fas fa-sign-out-alt me-2"></i> Log out
-                    </a>
+                    <form action="{% url 'admin:logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="fas fa-sign-out-alt me-2"></i> Log out
+                        </button>
+                    </form>
                 </li>
             </ul>
         </li>
 
-        <!-- Separate visible Logout button -->
+        <!-- Visible Logout button in top bar (always shown) -->
         <li class="nav-item">
-            <a class="nav-link btn btn-sm btn-outline-danger" href="{% url 'admin:logout' %}">
-                <i class="fas fa-sign-out-alt me-1"></i> Logout
-            </a>
+            <form action="{% url 'admin:logout' %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="nav-link btn btn-sm btn-outline-danger">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+            </form>
         </li>
     {% endif %}
 {% endblock %}
