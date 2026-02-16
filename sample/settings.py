@@ -162,15 +162,15 @@ JAZZMIN_SETTINGS = {
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
         "myapp.team": "fas fa-futbol",
-        "myapp.stadium": "fas fa-stadium",
+        "myapp.stadium": "fas fa-building",
         "myapp.match": "fas fa-futbol",
         "myapp.booking": "fas fa-ticket-alt",
         "myapp.seat": "fas fa-chair",
     },
-    "default_ui_tweaks": {
-        "sidebar_nav_small_text": False,
-        "accent": "accent-primary",
-        "navbar": "navbar-dark navbar-primary",
-        "sidebar": "sidebar-dark-primary",
-    },
+    # "default_ui_tweaks": {
+    #     "sidebar_nav_small_text": False,
+    #     "accent": "accent-primary",
+    #     "navbar": "navbar-dark navbar-primary",
+    #     "sidebar": "sidebar-dark-primary",
+    # },
 }
