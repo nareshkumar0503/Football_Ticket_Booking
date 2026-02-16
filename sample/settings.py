@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -143,3 +144,33 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+JAZZMIN_SETTINGS = {
+    "site_title": "Football Ticket Admin",
+    "site_header": "Football Ticket Booking",
+    "site_brand": "⚽ FTB Admin",
+    "welcome_sign": "Welcome to the Admin Panel",
+    "copyright": "Your Company © 2026",
+    "search_model": ["myapp.Match", "myapp.Booking"],
+    "topmenu_links": [
+        {"name": "View Site", "url": "/", "new_window": True},
+        {"name": "Matches Calendar", "url": "/admin/myapp/match/", "icon": "fas fa-calendar"},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "myapp.team": "fas fa-futbol",
+        "myapp.stadium": "fas fa-stadium",
+        "myapp.match": "fas fa-futbol",
+        "myapp.booking": "fas fa-ticket-alt",
+        "myapp.seat": "fas fa-chair",
+    },
+    "default_ui_tweaks": {
+        "sidebar_nav_small_text": False,
+        "accent": "accent-primary",
+        "navbar": "navbar-dark navbar-primary",
+        "sidebar": "sidebar-dark-primary",
+    },
+}
