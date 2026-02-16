@@ -2,9 +2,11 @@
 
 {% block user_links %}
     {% if user.is_authenticated %}
-        <li class="nav-item dropdown">
+        <!-- User dropdown -->
+        <li class="nav-item dropdown me-2">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user-circle fa-lg"></i> {{ user.get_username|default:user.username }}
+                <i class="fas fa-user-circle fa-lg"></i>
+                <span class="ms-1">{{ user.get_username|default:user.username }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 {% if user.is_staff %}
@@ -16,14 +18,18 @@
                     <li><hr class="dropdown-divider"></li>
                 {% endif %}
                 <li>
-                    <form action="{% url 'admin:logout' %}" method="post" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="dropdown-item text-danger">
-                            <i class="fas fa-sign-out-alt me-2"></i> Log out
-                        </button>
-                    </form>
+                    <a class="dropdown-item text-muted small" href="{% url 'admin:logout' %}">
+                        <i class="fas fa-sign-out-alt me-2"></i> Log out
+                    </a>
                 </li>
             </ul>
+        </li>
+
+        <!-- Separate visible Logout button -->
+        <li class="nav-item">
+            <a class="nav-link btn btn-sm btn-outline-danger" href="{% url 'admin:logout' %}">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </a>
         </li>
     {% endif %}
 {% endblock %}
