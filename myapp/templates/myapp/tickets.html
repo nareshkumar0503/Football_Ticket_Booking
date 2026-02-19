@@ -198,10 +198,16 @@
 <nav class="navbar">
     <div class="logo">
         <a href="{% url 'landingpage' %}">
-        <img src="{% static 'myapp/lala.png' %}" alt="Football Logo" class="logo-img">
+            <img src="{% static 'myapp/lala.png' %}" alt="La Liga" class="logo-img">
         </a>
     </div>
-    <ul class="nav-links">
+
+    <!-- Hamburger -->
+    <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
         <li><a href="{% url 'landingpage' %}"><b>Home</b></a></li>
         <li><a href="{% url 'matches' %}"><b>Matches</b></a></li>
         <li><a href="{% url 'tickets' %}"><b>Tickets</b></a></li>
@@ -301,5 +307,11 @@
 </footer>
 
 <script src="{% static 'myapp/land.js' %}"></script>
+<script>
+    // Hamburger Menu
+    document.getElementById('hamburger').addEventListener('click', function() {
+        document.getElementById('navLinks').classList.toggle('active');
+    });
+</script>
 </body>
 </html>
