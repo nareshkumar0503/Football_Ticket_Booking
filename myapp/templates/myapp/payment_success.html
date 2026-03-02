@@ -49,6 +49,46 @@
         .btn:hover { background: #1e3a8a; }
         .redirect-msg { margin-top: 30px; color: #64748b; font-size: 1rem; }
         #download-frame { display: none; } /* Hidden iframe for download */
+
+        /* Added media queries for responsiveness */
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 30px;
+                max-width: 90%;
+            }
+            .icon {
+                font-size: 4rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .details {
+                padding: 15px;
+                font-size: 0.95rem;
+            }
+            .btn {
+                padding: 12px 28px;
+                font-size: 1rem;
+            }
+            .redirect-msg {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .success-card {
+                padding: 20px;
+            }
+            .icon {
+                font-size: 3rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .details {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>

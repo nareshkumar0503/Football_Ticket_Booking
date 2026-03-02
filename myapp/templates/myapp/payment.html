@@ -15,6 +15,42 @@
         .details { background: #f8fafc; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: left; }
         .btn-pay { background: #22c55e; color: white; border: none; padding: 16px 40px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; margin-top: 30px; }
         .btn-pay:hover { background: #16a34a; }
+
+        /* Added media queries for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                margin: 40px auto;
+                max-width: 90%;
+            }
+            .header {
+                padding: 20px;
+            }
+            .content {
+                padding: 30px;
+            }
+            .amount {
+                font-size: 2.2rem;
+            }
+            .details {
+                padding: 15px;
+                font-size: 0.95rem;
+            }
+            .btn-pay {
+                padding: 14px 35px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .amount {
+                font-size: 1.8rem;
+            }
+            .btn-pay {
+                width: 100%;
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>

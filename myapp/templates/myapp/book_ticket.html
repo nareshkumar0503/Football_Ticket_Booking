@@ -60,6 +60,46 @@
         padding: 8px;          
         box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
     }
+
+    /* Added media queries for responsiveness */
+    @media (max-width: 768px) {
+        .seat-grid {
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+            gap: 8px;
+        }
+        .seat {
+            width: 100%;
+            height: auto;
+            padding-top: 100%; /* Square aspect ratio */
+            position: relative;
+            line-height: normal;
+            font-size: 14px;
+        }
+        .seat span { /* If needed for content */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .team-logo {
+            width: 60px;
+        }
+        .match-header {
+            gap: 10px;
+        }
+        .vs {
+            font-size: 1.2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .seat {
+            font-size: 12px;
+        }
+        .team-logo {
+            width: 50px;
+        }
+    }
     
     </style>
 </head>

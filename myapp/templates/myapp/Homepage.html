@@ -90,6 +90,49 @@ footer {
     color: #ff4b43;
     transform: scale(1.2);
 }
+
+/* Added media queries for responsiveness */
+@media (max-width: 768px) {
+    .hero {
+        padding: 60px 15px;
+    }
+    .hero h1 {
+        font-size: 36px;
+    }
+    .hero p {
+        font-size: 18px;
+    }
+    .auth-buttons {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        max-width: 300px;
+    }
+    .btn {
+        padding: 12px 25px;
+        font-size: 18px;
+        width: 100%;
+    }
+    footer {
+        padding: 20px;
+        font-size: 16px;
+    }
+    .social-icons a {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 28px;
+    }
+    .hero p {
+        font-size: 16px;
+    }
+    footer {
+        font-size: 14px;
+    }
+}
 </style>
 <body>
     {% if messages %}
