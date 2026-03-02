@@ -10,9 +10,10 @@
     <style>
         .seat-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(10, 1fr); /* Increased to 10 columns for better organization */
             gap: 5px;
             margin-top: 20px;
+            justify-content: center;
         }
         .seat {
             width: 40px;
@@ -22,6 +23,7 @@
             line-height: 40px;
             cursor: pointer;
             background: white;
+            position: relative; /* For centering in small screens */
         }
         .booked {
             background: red;
@@ -31,7 +33,7 @@
             background: green;
             color: white;
         }
-        /* Added styles for team logos */
+        /* Styles for team logos */
         .match-header {
             display: flex;
             align-items: center;
@@ -40,66 +42,67 @@
             margin-bottom: 20px;
         }
         .team-logo {
-            width: 80px; /* Adjust size as needed */
+            width: 100px;          
             height: auto;
-            border-radius: 50%; /* Optional: circular logos */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: subtle shadow */
+            object-fit: contain;   
+            border-radius: 12px;   
+            background: black;     
+            padding: 8px;          
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
         }
         .vs {
             font-size: 1.5rem;
             font-weight: bold;
             color: #333;
         }
+        .category-section {
+            margin-bottom: 40px;
+        }
+        .category-section h3 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+        }
 
-    .team-logo {
-        width: 100px;          
-        height: auto;
-        object-fit: contain;   
-        border-radius: 12px;   
-        background: black;     
-        padding: 8px;          
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
-    }
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .seat-grid {
+                grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+                gap: 8px;
+            }
+            .seat {
+                width: 100%;
+                height: auto;
+                padding-top: 100%; /* Square aspect ratio */
+                position: relative;
+                line-height: normal;
+                font-size: 14px;
+            }
+            .seat span {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .team-logo {
+                width: 60px;
+            }
+            .match-header {
+                gap: 10px;
+            }
+            .vs {
+                font-size: 1.2rem;
+            }
+        }
 
-    /* Added media queries for responsiveness */
-    @media (max-width: 768px) {
-        .seat-grid {
-            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-            gap: 8px;
+        @media (max-width: 480px) {
+            .seat {
+                font-size: 12px;
+            }
+            .team-logo {
+                width: 50px;
+            }
         }
-        .seat {
-            width: 100%;
-            height: auto;
-            padding-top: 100%; /* Square aspect ratio */
-            position: relative;
-            line-height: normal;
-            font-size: 14px;
-        }
-        .seat span { /* If needed for content */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .team-logo {
-            width: 60px;
-        }
-        .match-header {
-            gap: 10px;
-        }
-        .vs {
-            font-size: 1.2rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .seat {
-            font-size: 12px;
-        }
-        .team-logo {
-            width: 50px;
-        }
-    }
     
     </style>
 </head>
@@ -124,7 +127,7 @@
     </nav>
     <section class="section">
         <h2>Book Ticket for {{ match.home_team }} vs {{ match.away_team }}</h2>
-        <!-- Added team logos section -->
+        <!-- Team logos section -->
         <div class="match-header">
             {% if match.home_team.logo_url %}
                 <img src="{{ match.home_team.logo_url }}" alt="{{ match.home_team.name }} Logo" class="team-logo">
@@ -142,22 +145,26 @@
         {% endif %}
         <form method="post" class="contact-form">
             {% csrf_token %}
-            {{ form.as_p }}
+            <input type="hidden" name="seats_booked" id="id_seats_booked">
+            <input type="hidden" name="category" id="selected_category">
             <input type="hidden" name="selected_seats" id="selected_seats">
             <div id="seat-grids">
                 {% for cat, seats in seats_by_category.items %}
-                <div id="grid-{{ cat }}" class="seat-grid" style="display: none;">
-                    {% for seat in seats %}
-                    <div class="seat {% if seat.is_booked %}booked{% else %}available{% endif %}" data-id="{{ seat.id }}">
-                        {{ seat.seat_number }}
+                <div class="category-section">
+                    <h3>{{ cat }} Seats</h3>
+                    <div id="grid-{{ cat }}" class="seat-grid">
+                        {% for seat in seats %}
+                        <div class="seat {% if seat.is_booked %}booked{% else %}available{% endif %}" data-id="{{ seat.id }}">
+                            <span>{{ seat.seat_number }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
                 {% endfor %}
             </div>
             <button type="submit" class="book-btn">Confirm Booking</button>
         </form>
-        <a href="{% url 'landingpage' %}" class="btn">Back to Matches</a>
+        <a href="{% url 'landingpage' %}" class="book-btn" style="background: #333; color: white; text-decoration: none;">Back to Matches</a>
     </section>
     <footer id="contact">
     <div class="logo">
@@ -175,20 +182,23 @@
 </footer>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const categorySelect = document.querySelector('#id_category');
-            const grids = document.querySelectorAll('.seat-grid');
             const seatsInput = document.querySelector('#id_seats_booked');
             const selectedInput = document.querySelector('#selected_seats');
-            categorySelect.addEventListener('change', () => {
-                const selectedCat = categorySelect.value;
-                grids.forEach(grid => {
-                    grid.style.display = (grid.id === `grid-${selectedCat}`) ? 'block' : 'none';
-                });
-                document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-                updateInputs();
-            });
+            const categoryInput = document.querySelector('#selected_category');
+
             document.querySelectorAll('.available').forEach(seat => {
                 seat.addEventListener('click', () => {
+                    const thisGrid = seat.closest('.seat-grid');
+                    const thisCat = thisGrid.id.replace('grid-', '');
+                    const otherSelected = document.querySelectorAll(`.selected:not(#${thisGrid.id} .selected)`);
+
+                    if (otherSelected.length > 0) {
+                        if (!confirm('You have selections in another category. Switching will clear them. Continue?')) {
+                            return;
+                        }
+                        otherSelected.forEach(el => el.classList.remove('selected'));
+                    }
+
                     const selectedCount = document.querySelectorAll('.selected').length;
                     if (!seat.classList.contains('selected') && selectedCount >= 10) {
                         alert('Max 10 seats!');
@@ -198,12 +208,18 @@
                     updateInputs();
                 });
             });
+
             function updateInputs() {
                 const selected = document.querySelectorAll('.selected');
                 seatsInput.value = selected.length || '';
                 selectedInput.value = Array.from(selected).map(s => s.dataset.id).join(',');
+                if (selected.length > 0) {
+                    const firstSelectedCat = selected[0].closest('.seat-grid').id.replace('grid-', '');
+                    categoryInput.value = firstSelectedCat;
+                } else {
+                    categoryInput.value = '';
+                }
             }
-            categorySelect.dispatchEvent(new Event('change'));
         });
     </script>
 </body>
